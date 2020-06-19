@@ -6,7 +6,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
-
 namespace Giahung_Lab456.Controllers
 {
     public class CoursesController : Controller
@@ -31,19 +30,20 @@ namespace Giahung_Lab456.Controllers
         }
         [Authorize]
         [HttpPost]
-        public ActionResult Create(CourseViewModel ViewModel)
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(CourseViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
-                ViewModel.Categories = _dbConText.Catagories.ToList();
-                return View("Create", ViewModel);
+                viewModel.Categories = _dbConText.Catagories.ToList();
+                return View("Create", viewModel);
             }
             var course = new Course
             {
                 LecturerId = User.Identity.GetUserId(),
-                DateTime = ViewModel.GetDateTime(),
-                CategoryId = ViewModel.Category,
-                Place = ViewModel.Place
+                DateTime = viewModel.GetDateTime(),
+                CategoryId = viewModel.Category,
+                Place = viewModel.Place
             };
             _dbConText.Courses.Add(course);
             _dbConText.SaveChanges();

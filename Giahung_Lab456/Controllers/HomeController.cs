@@ -1,16 +1,33 @@
-﻿using System;
+﻿using Giahung_Lab456.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Data.Entity;
 
 namespace Giahung_Lab456.Controllers
 {
     public class HomeController : Controller
     {
+        private ApplicationDbContext _dbConText;
+        public HomeController()
+        {
+            _dbConText = new ApplicationDbContext();
+        }
         public ActionResult Index()
         {
-            return View();
+            var upcomingCourses = _dbConText.Courses
+                .Include(c => c.Lecturer)
+                .Include(c => c.Category)
+                .Where(c => c.DateTime > DateTime.Now);
+            var viewModel = new CoursesViewModel
+            {
+                
+                UpcomingCourses = upcomingCourses,
+                ShowAction = User.Identity.IsAuthenticated
+            };
+            return View(viewModel);
         }
 
         public ActionResult About()

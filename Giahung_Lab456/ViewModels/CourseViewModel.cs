@@ -9,13 +9,21 @@ namespace Giahung_Lab456.ViewModels
 {
         public class CourseViewModel
         {
-            [Required]
+        public IEnumerable<Course> UpcomingCourses { get; set; }
+
+        public IEnumerable<ApplicationUser> Follows { get; set; }
+
+        public IEnumerable<Following> Fl { get; set; }
+
+
+        public bool ShowAction { get; set; }
+        [Required]
             public string Place { get; set; }
             [Required]
-            [@FutureDate]
+            [FutureDate]
             public string Date { get; set; }
             [Required]
-            [ValidTime]
+            [VaLidTime]
             public string Time { get; set; }
             [Required]
             public byte Category { get; set; }
